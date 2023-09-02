@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:8.0.32
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mysql
+      MYSQL_USER: kit
+      MYSQL_PASSWORD: kit
+    volumes:
+      - ./init-db:/docker-entrypoint-initdb.d
+      - ./db-data:/var/lib/mysql
+    ports:
+      - 3306:3306
+    networks:
+      - mynetwork
+  api:
+    build: .
+    environment:
+      DB_HOST: db
+      DB_USER: kit
+      DB_PASSWORD: kit
+      PORT: 3306
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+
+networks:
+  mynetwork:
+    driver: bridge
