@@ -22,10 +22,14 @@ services:
       DB_USER: kit
       DB_PASSWORD: kit
       PORT: 3306
+      DB_DATABASE: mysql
+
     ports:
       - 3000:3000
     depends_on:
       - db
+    networks:
+      - mynetwork
 
 networks:
   mynetwork:
